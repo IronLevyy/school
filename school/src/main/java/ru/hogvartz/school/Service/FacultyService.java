@@ -1,15 +1,10 @@
 package ru.hogvartz.school.Service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.hogvartz.school.Model.Faculty;
-import ru.hogvartz.school.Model.Student;
 import ru.hogvartz.school.Repository.FacultyRepository;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.stream.Collectors;
 
 @Service
 public class FacultyService {
@@ -39,5 +34,9 @@ public class FacultyService {
 
     public Collection<Faculty> getFacultyForColor(String color) {
         return facultyRepository.findByColor(color);
+    }
+
+    public Collection<Faculty> getFacultyForColorOrName(String findTerm) {
+        return facultyRepository.findByNameIgnoreCaseOrColorIgnoreCase(findTerm, findTerm);
     }
 }

@@ -2,6 +2,7 @@ package ru.hogvartz.school.Controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.hogvartz.school.Model.Faculty;
 import ru.hogvartz.school.Model.Student;
 import ru.hogvartz.school.Service.StudentService;
 
@@ -25,6 +26,16 @@ public class StudentController {
     @GetMapping("filter/{age}")
     public Collection<Student> getStudentsForAge(@PathVariable int age) {
         return studentService.getStudentsForAge(age);
+    }
+
+    @GetMapping("filter/{min}/{max}")
+    public Collection<Student> getStudentsBetweenAge(@PathVariable int min, @PathVariable int max) {
+        return studentService.getStudentsBetweenAge(min, max);
+    }
+
+    @GetMapping("faculty/{id}")
+    public Faculty getFaculty(@PathVariable Long id) {
+        return studentService.getStudent(id).getFaculty();
     }
 
 

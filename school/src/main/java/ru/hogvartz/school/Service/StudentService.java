@@ -2,6 +2,7 @@ package ru.hogvartz.school.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.hogvartz.school.Model.Faculty;
 import ru.hogvartz.school.Model.Student;
 import ru.hogvartz.school.Repository.StudentRepository;
 
@@ -38,5 +39,9 @@ public class StudentService {
 
     public Collection<Student> getStudentsForAge(int age) {
         return studentRepository.findByAge(age);
+    }
+
+    public Collection<Student> getStudentsBetweenAge(int min, int max) {
+        return studentRepository.findByAgeBetween(min, max);
     }
 }

@@ -3,6 +3,7 @@ package ru.hogvartz.school.Controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hogvartz.school.Model.Faculty;
+import ru.hogvartz.school.Model.Student;
 import ru.hogvartz.school.Service.FacultyService;
 
 import java.util.Collection;
@@ -22,9 +23,19 @@ public class FacultyController {
         return facultyService.getFaculty(id);
     }
 
-    @GetMapping("filter/{color}")
+    @GetMapping("filter/findByColor/{color}")
     public Collection<Faculty> getFacultyForColor(@PathVariable String color) {
         return facultyService.getFacultyForColor(color);
+    }
+
+    @GetMapping("/filter/findByColorOrName/{findTerm}")
+    public Collection<Faculty> getFacultyForColorOrName(@PathVariable String findTerm) {
+        return facultyService.getFacultyForColorOrName(findTerm);
+    }
+
+    @GetMapping("students/{id}")
+    public Collection<Student> getStudents(@PathVariable Long id) {
+        return facultyService.getFaculty(id).getStudents();
     }
 
     @PutMapping
