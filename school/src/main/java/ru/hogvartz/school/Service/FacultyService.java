@@ -2,40 +2,41 @@ package ru.hogvartz.school.Service;
 
 import org.springframework.stereotype.Service;
 import ru.hogvartz.school.Model.Faculty;
-import ru.hogvartz.school.Model.Student;
+import ru.hogvartz.school.Repository.FacultyRepository;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.stream.Collectors;
 
 @Service
 public class FacultyService {
-    private HashMap<Long, Faculty> facults = new HashMap<>();
-    private long lastId = 0;
+    final
+    FacultyRepository facultyRepository;
 
-    public Faculty createFaculty(Faculty faculty) {
-        faculty.setId(++lastId);
-        facults.put(faculty.getId(), faculty);
-        return faculty;
+    public FacultyService(FacultyRepository facultyRepository) {
+        this.facultyRepository = facultyRepository;
     }
 
-    public Faculty getFaculty(long id) {
-        return facults.get(id);
+    public Faculty createFaculty(Faculty faculty) {
+        faculty.setId(null);
+        return facultyRepository.save(faculty);
+    }
+
+    public Faculty getFaculty(Long id) {
+        return facultyRepository.findById(id).get();
     }
 
     public Faculty updateFaculty(Faculty faculty) {
-        facults.put(faculty.getId(), faculty);
-        return faculty;
+        return facultyRepository.save(faculty);
     }
 
-    public Faculty deleteFaculty(long id) {
-        return facults.remove(id);
+    public void deleteFaculty(long id) {
+        facultyRepository.deleteById(id);
     }
 
     public Collection<Faculty> getFacultyForColor(String color) {
-        return facults.values().stream()
-                .filter(student -> student.getColor().equals(color))
-                .collect(Collectors.toCollection(ArrayList::new));
+        return facultyRepository.findByColor(color);
+    }
+
+    public Collection<Faculty> getFacultyForColorOrName(String findTerm) {
+        return facultyRepository.findByNameIgnoreCaseOrColorIgnoreCase(findTerm, findTerm);
     }
 }
