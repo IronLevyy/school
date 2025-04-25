@@ -28,7 +28,7 @@ public class FacultyController {
         return facultyService.getFacultyForColor(color);
     }
 
-    @GetMapping("/filter/findByColorOrName/{findTerm}")
+    @GetMapping("filter/findByColorOrName/{findTerm}")
     public Collection<Faculty> getFacultyForColorOrName(@PathVariable String findTerm) {
         return facultyService.getFacultyForColorOrName(findTerm);
     }
