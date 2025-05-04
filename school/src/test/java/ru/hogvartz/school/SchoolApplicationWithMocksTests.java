@@ -2,12 +2,12 @@ package ru.hogvartz.school;
 
 import net.minidev.json.JSONObject;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.hogvartz.school.Controller.FacultyController;
@@ -22,19 +22,18 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest
+@Import(FacultyService.class)
+@WebMvcTest(FacultyController.class)
 public class SchoolApplicationWithMocksTests {
     @Autowired
     private MockMvc mockMvc;
 
-    @Mock
+    @MockitoBean
     private FacultyRepository facultyRepository;
 
-    @Spy
-    private FacultyService facultyService = new FacultyService(facultyRepository);
+    @MockitoSpyBean
+    private FacultyService facultyService;
 
-    @InjectMocks
-    private FacultyController facultyController;
 
     @Test
     public void saveUserTest() throws Exception {
