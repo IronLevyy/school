@@ -12,7 +12,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="school" options="-parameters" />
+      <module name="school" options="-parameters --add-exports jdk.jfr/jdk.jfr.internal.jfc.model=ALL-UNNAMED" />
     </option>
   </component>
 </project>
