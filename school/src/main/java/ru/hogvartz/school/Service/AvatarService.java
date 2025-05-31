@@ -30,6 +30,7 @@ public class AvatarService {
         this.studentRepository = studentRepository;
     }
 
+    @Transactional
     public void uploadAvatar(Long studentId, MultipartFile avatarFile) throws IOException {
         Student student = studentRepository.getById(studentId);
 
