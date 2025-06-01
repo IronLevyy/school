@@ -1,5 +1,6 @@
 package ru.hogvartz.school.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Arrays;
@@ -10,7 +11,7 @@ public class Avatar {
 
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String filePath;
@@ -18,10 +19,12 @@ public class Avatar {
     private String mediaType;
 
     @Lob
-    @Basic(fetch = FetchType.EAGER)
+    @Basic(fetch = FetchType.LAZY)
     @Column(name = "data", columnDefinition = "BYTEA")
+    @JsonIgnore
     private byte[] data;
 
+    @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Student student;
 
