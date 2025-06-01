@@ -55,6 +55,16 @@ public class StudentController {
         return studentService.getLastFiveStudents();
     }
 
+    @GetMapping("/print-parallel")
+    public void printParallel() {
+        studentService.printNamesWithParallelThreads();
+    }
+
+    @GetMapping("/print-synchronized")
+    public void printSynchronized() {
+        studentService.printNamesWithSynchronizedThreads();
+    }
+
 
     @PutMapping
     public Student updateStudent(@RequestBody Student student) {
