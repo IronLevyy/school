@@ -38,6 +38,11 @@ public class FacultyController {
         return facultyService.getFaculty(id).getStudents();
     }
 
+    @GetMapping("/parellel/longest-name")
+    public String getLongestFacultyName() {
+        return facultyService.getLongestFacultyName();
+    }
+
     @PutMapping
     public Faculty updateFaculty(@RequestBody Faculty Faculty) {
         return facultyService.updateFaculty(Faculty);

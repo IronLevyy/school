@@ -1,6 +1,5 @@
 package ru.hogvartz.school.Service;
 
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.hogvartz.school.Model.Student;
 import ru.hogvartz.school.Repository.StudentRepository;
@@ -66,5 +65,22 @@ public class StudentService {
                 .map(StudentMapper::toDTO)
                 .collect(Collectors.toList());
     }
+
+    public List<String> getNamesStartingWithA() {
+        return studentRepository.findAll().parallelStream()
+                .map(Student::getName)
+                .filter(name -> name != null && name.toUpperCase().startsWith("А"))
+                .map(String::toUpperCase)
+                .sorted()
+                .collect(Collectors.toList());
+    }
+
+    public double getAverageAgeWithParallel() {
+        return studentRepository.findAll().parallelStream()
+                .mapToInt(Student::getAge)
+                .average()
+                .orElse(0.0);
+    }
+
 
 }

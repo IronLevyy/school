@@ -5,6 +5,8 @@ import ru.hogvartz.school.Model.Faculty;
 import ru.hogvartz.school.Repository.FacultyRepository;
 
 import java.util.Collection;
+import java.util.Comparator;
+import java.util.Objects;
 
 @Service
 public class FacultyService {
@@ -39,5 +41,13 @@ public class FacultyService {
 
     public Collection<Faculty> getFacultyForColorOrName(String findTerm) {
         return facultyRepository.findByNameIgnoreCaseOrColorIgnoreCase(findTerm, findTerm);
+    }
+
+    public String getLongestFacultyName() {
+        return facultyRepository.findAll().parallelStream()
+                .map(Faculty::getName)
+                .filter(Objects::nonNull)
+                .max(Comparator.comparingInt(String::length))
+                .orElse("No faculties found");
     }
 }
