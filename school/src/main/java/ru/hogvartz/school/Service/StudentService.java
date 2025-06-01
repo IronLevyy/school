@@ -1,10 +1,15 @@
 package ru.hogvartz.school.Service;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.hogvartz.school.Model.Student;
 import ru.hogvartz.school.Repository.StudentRepository;
+import ru.hogvartz.school.dto.StudentDTO;
+import ru.hogvartz.school.mapper.StudentMapper;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentService {
@@ -20,8 +25,9 @@ public class StudentService {
         return studentRepository.save(student);
     }
 
-    public Student getStudent(Long id) {
-        return studentRepository.findById(id).get();
+    public StudentDTO getStudent(Long id) {
+        Student student = studentRepository.getById(id);
+        return StudentMapper.toDTO(student);
     }
 
     public Student updateStudent(Student student) {
@@ -32,11 +38,33 @@ public class StudentService {
         studentRepository.deleteById(id);
     }
 
-    public Collection<Student> getStudentsForAge(int age) {
-        return studentRepository.findByAge(age);
+    public Collection<StudentDTO> getStudentsForAge(int age) {
+        List<Student> students = studentRepository.findByAge(age);
+        return students.stream()
+                .map(StudentMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
-    public Collection<Student> getStudentsBetweenAge(int min, int max) {
-        return studentRepository.findByAgeBetween(min, max);
+    public Collection<StudentDTO> getStudentsBetweenAge(int min, int max) {
+        List<Student> students = studentRepository.findByAgeBetween(min, max);
+        return students.stream()
+                .map(StudentMapper::toDTO)
+                .collect(Collectors.toList());
     }
+
+    public long getTotalStudents() {
+        return studentRepository.countAllStudents();
+    }
+
+    public Double getAverageAge() {
+        return studentRepository.findAverageAge();
+    }
+
+    public List<StudentDTO> getLastFiveStudents() {
+        List<Student> students = studentRepository.findLastFiveStudents();
+        return students.stream()
+                .map(StudentMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
 }
