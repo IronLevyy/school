@@ -71,6 +71,15 @@ public class StudentController {
         return IntStream.rangeClosed(1, 1_000_000)
                 .parallel()
                 .reduce(0, Integer::sum);
+
+    @GetMapping("/print-parallel")
+    public void printParallel() {
+        studentService.printNamesWithParallelThreads();
+    }
+
+    @GetMapping("/print-synchronized")
+    public void printSynchronized() {
+        studentService.printNamesWithSynchronizedThreads();
     }
 
 

@@ -1,5 +1,7 @@
 package ru.hogvartz.school.Service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,8 +32,11 @@ public class AvatarService {
         this.studentRepository = studentRepository;
     }
 
+    private static final Logger logger = LoggerFactory.getLogger(AvatarService.class);
+
     @Transactional
     public void uploadAvatar(Long studentId, MultipartFile avatarFile) throws IOException {
+        logger.info("Uploading avatar");
         Student student = studentRepository.getById(studentId);
 
         String extension = getExtensions(avatarFile.getOriginalFilename());
@@ -61,26 +66,39 @@ public class AvatarService {
     }
 
     private String getExtensions(String fileName) {
+        logger.debug("Getting file extensions");
         return fileName.substring(fileName.lastIndexOf('.') + 1);
     }
 
 
     public byte[] getAvatarFromDb(Long studentId) {
+        logger.info("Getting avatar from DB");
         return avatarRepository.findByStudentId(studentId)
                 .map(Avatar::getData)
-                .orElseThrow(() -> new RuntimeException("Avatar not found"));
+                .orElseThrow(() -> {
+                    logger.error("Avatar not found");
+                    return new RuntimeException("Avatar not found");
+                });
     }
 
     public byte[] getAvatarFromFile(Long studentId) throws IOException {
+        logger.info("Getting avatar from File");
         Avatar avatar = avatarRepository.findByStudentId(studentId)
-                .orElseThrow(() -> new RuntimeException("Avatar not found"));
+                .orElseThrow(() -> {
+                    logger.error("Avatar not found");
+                    return new RuntimeException("Avatar not found");
+                });
 
         return Files.readAllBytes(Paths.get(avatar.getFilePath()));
     }
 
     @Transactional(readOnly = true)
     public Avatar findAvatar(Long studentId) {
+        logger.info("Getting avatar from DB");
         return avatarRepository.findByStudentId(studentId)
-                .orElseThrow(() -> new RuntimeException("Avatar not found for student with id: " + studentId));
+                .orElseThrow(() -> {
+                    logger.error("Avatar not found");
+                    return new RuntimeException("Avatar not found for student with id: " + studentId);
+                });
     }
 }
