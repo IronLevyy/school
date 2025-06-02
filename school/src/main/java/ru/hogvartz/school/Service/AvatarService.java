@@ -3,6 +3,8 @@ package ru.hogvartz.school.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,7 +18,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.Objects;
 
 @Service
 public class AvatarService {
@@ -100,5 +101,10 @@ public class AvatarService {
                     logger.error("Avatar not found");
                     return new RuntimeException("Avatar not found for student with id: " + studentId);
                 });
+    }
+
+    public Page<Avatar> getAvatarsOnPage(Pageable pageable) {
+        logger.info("Getting avatars from DB");
+        return avatarRepository.findAll(pageable);
     }
 }

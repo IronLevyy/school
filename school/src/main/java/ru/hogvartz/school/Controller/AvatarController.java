@@ -67,7 +67,7 @@ public class AvatarController {
             @RequestParam(defaultValue = "2") int size
     ) {
         Pageable pageable = PageRequest.of(page, size);
-        return avatarRepository.findAll(pageable);
+        return avatarService.getAvatarsOnPage(pageable);
     }
 
 }
