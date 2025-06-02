@@ -76,4 +76,53 @@ public class StudentService {
                 .collect(Collectors.toList());
     }
 
+    public void printNamesWithParallelThreads() {
+        List<String> names = studentRepository.findAll().stream()
+                .map(Student::getName)
+                .limit(6)
+                .toList();
+
+        System.out.println(names.get(0));
+        System.out.println(names.get(1));
+
+        Thread threadOne = new Thread(() -> {
+                System.out.println(names.get(2));
+                System.out.println(names.get(3));
+        });
+
+        Thread threadTwo = new Thread(() -> {
+            System.out.println(names.get(4));
+            System.out.println(names.get(5));
+        });
+
+        threadOne.start();
+        threadTwo.start();
+    }
+
+    public synchronized void printNameSync(String name) {
+        System.out.println(name);
+    }
+
+    public void printNamesWithSynchronizedThreads() {
+        List<String> names = studentRepository.findAll().stream()
+                .map(Student::getName)
+                .limit(6)
+                .toList();
+
+        printNameSync(names.get(0));
+        printNameSync(names.get(1));
+
+        Thread threadOne = new Thread(() -> {
+            printNameSync(names.get(2));
+            printNameSync(names.get(3));
+        });
+
+        Thread threadTwo = new Thread(() -> {
+            printNameSync(names.get(4));
+            printNameSync(names.get(5));
+        });
+
+        threadOne.start();
+        threadTwo.start();
+    }
 }
