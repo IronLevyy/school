@@ -9,6 +9,7 @@ import ru.hogvartz.school.dto.StudentDTO;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.IntStream;
 
 
 @RestController
@@ -54,6 +55,22 @@ public class StudentController {
     public List<StudentDTO> getLastFiveStudents() {
         return studentService.getLastFiveStudents();
     }
+
+    @GetMapping("/parallel/names-start-with-a")
+    public List<String> getNamesStartingWithA() {
+        return studentService.getNamesStartingWithA();
+    }
+
+    @GetMapping("/parallel/average-age")
+    public double getAverageAgeWithParallel() {
+        return studentService.getAverageAgeWithParallel();
+    }
+
+    @GetMapping("/parallel/sum")
+    public int getParallelSum() {
+        return IntStream.rangeClosed(1, 1_000_000)
+                .parallel()
+                .reduce(0, Integer::sum);
 
     @GetMapping("/print-parallel")
     public void printParallel() {

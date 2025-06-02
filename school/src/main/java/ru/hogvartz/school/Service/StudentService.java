@@ -76,6 +76,22 @@ public class StudentService {
                 .collect(Collectors.toList());
     }
 
+    public List<String> getNamesStartingWithA() {
+        return studentRepository.findAll().parallelStream()
+                .map(Student::getName)
+                .filter(name -> name != null && name.toUpperCase().startsWith("А"))
+                .map(String::toUpperCase)
+                .sorted()
+                .collect(Collectors.toList());
+    }
+
+    public double getAverageAgeWithParallel() {
+        return studentRepository.findAll().parallelStream()
+                .mapToInt(Student::getAge)
+                .average()
+                .orElse(0.0);
+    }
+
     public void printNamesWithParallelThreads() {
         List<String> names = studentRepository.findAll().stream()
                 .map(Student::getName)
